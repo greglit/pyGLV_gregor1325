@@ -1206,13 +1206,13 @@ def displayGUI():
     """
     #global value
     Func_GUI()
-    CSV_GUI()
-    Area_Chart()
-    ScatterPlot_Chart()
-    Histogram_Chart()
-    Ravdogram_Chart()
-    Pita_Chart()    
-    light_GUI()
+    # CSV_GUI()
+    # Area_Chart()
+    # ScatterPlot_Chart()
+    # Histogram_Chart()
+    # Ravdogram_Chart()
+    # Pita_Chart()    
+    # light_GUI()
 
     CleanData()
 
