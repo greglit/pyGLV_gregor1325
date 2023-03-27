@@ -312,22 +312,10 @@ CleanData = 0
 def CleanData():
     imgui.begin("- CleanData -")
     imgui.text("Clean Data")
-    global pointchild
-    global trianglechild3D
-    global trianglechild2D
+
     global superfuncchild2D
     global superfuncchild3D
-    global histogramchild2D
-    global histogramchild3D
-    global ravdogramchild2D
-    global ravdogramchild3D
-    global lsr2Dchild
-    global lsr3Dchild
-    global piechild2D
-    global piechild3D
-    global childplatX
-    global childplatZ
-    global spotPointschild
+
 
     CleanData = imgui.button("clean")
     if (CleanData):
