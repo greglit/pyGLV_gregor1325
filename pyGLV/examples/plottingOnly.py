@@ -101,10 +101,10 @@ def bountries(xmin=-1, xmax =1, ymin=-1,ymax=1,zmin=-1,zmax=1):
 FuncValues = 0., 1., 0., 1.
 f_x = 'x**2+x*4'
 f_x_y = 'x**2+y**2'
-super_func_2D_child_count = 0
+superfuncchild2D = 0
 toggleSuperFunc2D = True
 
-super_func_3D_child_count = 0
+superfuncchild3D = 0
 toggleSuperFunc3D = True
 funcDetail = 10
 
@@ -115,14 +115,14 @@ plattoggleX = True
 plattoggleZ = True
 togglepoints = True
 
-def function_plotting_update_gui_and_plots():
+def Func_GUI():
     global FuncValues
     global f_x_y
     global f_x
 
-    global super_func_2D_child_count
+    global superfuncchild2D
     global toggleSuperFunc2D
-    global super_func_3D_child_count
+    global superfuncchild3D
     global toggleSuperFunc3D
     global funcDetail
     global platforms
@@ -175,14 +175,14 @@ def function_plotting_update_gui_and_plots():
         funcDetail = 4
     if (Func_Button2D):
         removeEntityChilds(SuperFunction2D)
-        super_func_2D_child_count = 0
+        superfuncchild2D = 0
         x = np.linspace(FuncValues[0], FuncValues[1], funcDetail)
         y = f_X(x)
         l = 0
         while (l < len(x) - 1):
-            super_func_2D_child_count += 1
+            superfuncchild2D += 1
             l += 1
-            DynamicVariable = "SuperFunction" + str(super_func_2D_child_count)
+            DynamicVariable = "SuperFunction" + str(superfuncchild2D)
             point1 = x[l], y[l], 0, 1
             point2 = x[l - 1], y[l - 1], 0, 1
             vars()[DynamicVariable]: GameObjectEntity = LineSpawn(DynamicVariable, point2, point1, 1, 1, 0)
@@ -191,7 +191,7 @@ def function_plotting_update_gui_and_plots():
         scene.world.traverse_visit(initUpdate, scene.world.root)
     if (Func_Button3D):
         removeEntityChilds(SuperFunction3D)
-        super_func_3D_child_count = 0
+        superfuncchild3D = 0
 
         removeEntityChilds(funcPlatformX)
         childplatX = 0
@@ -224,8 +224,8 @@ def function_plotting_update_gui_and_plots():
 
                 l += 1
                 # first triangle
-                super_func_3D_child_count += 1
-                DynamicVariable = "Function" + str(super_func_3D_child_count)
+                superfuncchild3D += 1
+                DynamicVariable = "Function" + str(superfuncchild3D)
                 point1 = x[l - 1], f_Z(x[l - 1], z[q - 1]), z[q - 1], 1
                 point2 = x[l], f_Z(x[l], z[q - 1]), z[q - 1], 1
                 point3 = x[l], f_Z(x[l], z[q]), z[q], 1
@@ -233,8 +233,8 @@ def function_plotting_update_gui_and_plots():
                                                                           b)
                 scene.world.addEntityChild(SuperFunction3D, vars()[DynamicVariable])
                 # second triangle
-                super_func_3D_child_count += 1
-                DynamicVariable = "Function" + str(super_func_3D_child_count)
+                superfuncchild3D += 1
+                DynamicVariable = "Function" + str(superfuncchild3D)
                 point1 = x[l - 1], f_Z(x[l - 1], z[q - 1]), z[q - 1], 1
                 point2 = x[l], f_Z(x[l], z[q]), z[q], 1
                 point3 = x[l - 1], f_Z(x[l - 1], z[q]), z[q], 1
@@ -308,7 +308,6 @@ def function_plotting_update_gui_and_plots():
         plattoggleZ = False
     imgui.end()
 
-
 CleanData = 0
 def CleanData():
     imgui.begin("- CleanData -")
@@ -316,8 +315,8 @@ def CleanData():
     global pointchild
     global trianglechild3D
     global trianglechild2D
-    global super_func_2D_child_count
-    global super_func_3D_child_count
+    global superfuncchild2D
+    global superfuncchild3D
     global histogramchild2D
     global histogramchild3D
     global ravdogramchild2D
@@ -337,8 +336,8 @@ def CleanData():
         removeEntityChilds(SuperFunction2D)
         removeEntityChilds(SuperFunction3D)
 
-        super_func_3D_child_count = 0
-        super_func_2D_child_count = 0
+        superfuncchild3D = 0
+        superfuncchild2D = 0
 
 
     imgui.end()
@@ -351,7 +350,7 @@ def displayGUI():
     """
         displays ImGui
     """
-    function_plotting_update_gui_and_plots()
+    Func_GUI()
 
     CleanData()
 
@@ -792,10 +791,10 @@ def main(imguiFlag=False):
     global trianglechild3D
     global togglePlatformSwitch3D
 
-    global super_func_2D_child_count
+    global superfuncchild2D
     global toggleSuperFunc2D
 
-    global super_func_3D_child_count
+    global superfuncchild3D
     global toggleSuperFunc3D
 
 
@@ -815,30 +814,29 @@ def main(imguiFlag=False):
     Mshininess = 0.0
     Mcolor = util.vec(0.7, 0.35, 0.0)
 
-    def function_plotting_create_nodes_for_function(functionEntity, childCount):
-        for i in range(1, childCount + 1):
-            curr_child = functionEntity.getChild(i).shaderDec
-            if toggleSuperFunc2D:
-                curr_child.setUniformVariable(key='modelViewProj',
-                                              value=mvp_point @ SuperFunction2D.getChild(i).trans.l2cam,
-                                              mat4=True)
-                curr_child.setUniformVariable(key='model', value=SuperFunction2D.getChild(i).trans.l2cam, mat4=True)
-                curr_child.setUniformVariable(key='ambientColor', value=Lambientcolor, float3=True)
-                curr_child.setUniformVariable(key='ambientStr', value=Lambientstr, float1=True)
-                curr_child.setUniformVariable(key='viewPos', value=LviewPos, float3=True)
-                curr_child.setUniformVariable(key='lightPos', value=Lposition, float3=True)
-                curr_child.setUniformVariable(key='lightColor', value=Lcolor, float3=True)
-                curr_child.setUniformVariable(key='lightIntensity', value=Lintensity, float1=True)
-                curr_child.setUniformVariable(key='shininess', value=Mshininess, float1=True)
-                curr_child.setUniformVariable(key='matColor', value=Mcolor, float3=True)
+    def function_plotting_display_nodes(function_entity, child_count, toggleFlag):
+        for i in range(1, child_count+1):
+            curr_child = function_entity.getChild(i)
+            if toggleFlag:
+                curr_child.shaderDec.setUniformVariable(key='modelViewProj', value=mvp_point @ curr_child.trans.l2cam, mat4=True)
+                curr_child.shaderDec.setUniformVariable(key='model', value=curr_child.trans.l2cam, mat4=True)
+                curr_child.shaderDec.setUniformVariable(key='ambientColor', value=Lambientcolor, float3=True)
+                curr_child.shaderDec.setUniformVariable(key='ambientStr', value=Lambientstr, float1=True)
+                curr_child.shaderDec.setUniformVariable(key='viewPos', value=LviewPos, float3=True)
+                curr_child.shaderDec.setUniformVariable(key='lightPos', value=Lposition, float3=True)
+                curr_child.shaderDec.setUniformVariable(key='lightColor', value=Lcolor, float3=True)
+                curr_child.shaderDec.setUniformVariable(key='lightIntensity', value=Lintensity, float1=True)
+                curr_child.shaderDec.setUniformVariable(key='shininess', value=Mshininess, float1=True)
+                curr_child.shaderDec.setUniformVariable(key='matColor', value=Mcolor, float3=True)
             else:
-                curr_child.setUniformVariable(key='modelViewProj', value=None, mat4=True)
+                curr_child.shaderDec.setUniformVariable(key='modelViewProj', value=None, mat4=True)
+
 
     # Displays all nodes created
     def Display():
         # print SuperFunction
-        function_plotting_create_nodes_for_function(SuperFunction2D, super_func_2D_child_count)
-        function_plotting_create_nodes_for_function(SuperFunction3D, super_func_3D_child_count)
+        function_plotting_display_nodes(SuperFunction2D, superfuncchild2D, toggleSuperFunc2D)
+        function_plotting_display_nodes(SuperFunction3D, superfuncchild3D, toggleSuperFunc3D)
 
         scene.render_post()
 
