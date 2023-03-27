@@ -747,22 +747,10 @@ def main(imguiFlag=False):
 
     renderGLEventActuator = RenderGLStateSystem()
 
-    # updateTRS = Event(name="OnUpdateTRS", id=100, value=None) #lines 255-258 contains the Scenegraph in a GUI as is it has issues.. To be fixed
-    # updateBackground = Event(name="OnUpdateBackground", id=200, value=None)
-    # eManager._events[updateTRS.name] = updateTRS
-    # eManager._events[updateBackground.name] = updateBackground
-
-    # eManager._subscribers[updateTRS.name] = gGUI
-    # eManager._subscribers[updateBackground.name] = gGUI
-
     eManager._subscribers['OnUpdateWireframe'] = gWindow
     eManager._actuators['OnUpdateWireframe'] = renderGLEventActuator
     eManager._subscribers['OnUpdateCamera'] = gWindow
     eManager._actuators['OnUpdateCamera'] = renderGLEventActuator
-
-    # Add RenderWindow to the EventManager publishers
-    # eManager._publishers[updateBackground.name] = gGUI
-    # eManager._publishers[updateBackground.name] = gGUI ## added
 
     eye = util.vec(1.2, 4.34, 6.1)
     target = util.vec(0.0, 0.0, 0.0)
@@ -775,46 +763,22 @@ def main(imguiFlag=False):
 
     model_terrain_axes = util.translate(0.0, 0.0, 0.0)
 
-    global pointListfromCSV
-    global xPlane
-    global yPlane
-    global zPlane
-    global PointSize
-    global values
-    global keys
-
-    global pointchild
-    global toggle_scatterplot
-
-    global SplineList
-
-    global trianglechild3D
-    global togglePlatformSwitch3D
-
     global superfuncchild2D
     global toggleSuperFunc2D
 
     global superfuncchild3D
     global toggleSuperFunc3D
 
-
-
-    global spotPointschild
-    global LightPosionValues
-    # Light
-
-    # Lposition = util.vec(LightPosionValues) #uniform lightpos
-
-    Lambientcolor = util.vec(1.0, 1.0, 5.0)  # uniform ambient color
-    Lambientstr = 0.1  # uniform ambientStr
-    LviewPos = util.vec(2.5, 2.8, 5.0)  # uniform viewpos
-    Lcolor = util.vec(1.0, 1.0, 1.0)
-    Lintensity = 0.5
-    # Material
-    Mshininess = 0.0
-    Mcolor = util.vec(0.7, 0.35, 0.0)
-
     def function_plotting_display_nodes(function_entity, child_count, toggleFlag):
+        Lambientcolor = util.vec(1.0, 1.0, 5.0)  # uniform ambient color
+        Lambientstr = 0.1  # uniform ambientStr
+        LviewPos = util.vec(2.5, 2.8, 5.0)  # uniform viewpos
+        Lcolor = util.vec(1.0, 1.0, 1.0)
+        Lintensity = 0.5
+        # Material
+        Mshininess = 0.0
+        Mcolor = util.vec(0.7, 0.35, 0.0)
+
         for i in range(1, child_count+1):
             curr_child = function_entity.getChild(i)
             if toggleFlag:
